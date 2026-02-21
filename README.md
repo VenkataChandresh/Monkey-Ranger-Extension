@@ -1,32 +1,48 @@
 # 🐒 Monkey Ranger Extension
 
-> _"Monkey sees your deadlines. Monkey is not impressed."_
+> "Monkey sees your deadlines. Monkey is not impressed."
 
-A Chrome extension that fetches your Canvas assignments and roasts you
-for procrastinating — because nothing motivates students like being
-judged by a monkey.
+Monkey Ranger is a Chrome extension that watches your Canvas assignments, calculates your procrastination threat level, and delivers sarcastic monkey warnings before your academic downfall becomes irreversible.
+
+Built for students who think "I still have time" when they absolutely do not.
 
 ---
 
 ## 🎯 What It Does
 
-- Fetches your Canvas calendar and assignments
-- Checks what's submitted and what isn't
-- Assigns a **threat level** based on how close your deadline is
-- Delivers a **sarcastic monkey roast** based on your situation
-- Gets progressively more unhinged the closer you are to doom
+Monkey Ranger acts as your chaotic academic guardian by:
+
+- Monitoring your Canvas assignments (simulated for prototype)
+- Detecting submitted vs unsubmitted work
+- Delivering sarcastic and progressively unhinged monkey warnings
+- Helping students prioritize work before panic mode activates
+
+Monkey Ranger doesn't just show deadlines.
+
+Monkey judges your life choices.
 
 ---
 
 ## 🌩️ Threat Levels
 
-| Level      | Time Left | Monkey Vibe                                        |
-| ---------- | --------- | -------------------------------------------------- |
-| 🟢 Chill   | 5+ days   | Monkey is proud. Don't waste it.                   |
-| 🟡 Nervous | 2-4 days  | Monkey is watching. Monkey is concerned.           |
-| 🟠 Panic   | 1 day     | OOH OOH AH AH. MONKEY PANICKING.                   |
-| 🔴 Doomed  | <6 hours  | Monkey has seen this before. It did not end well.  |
-| 💀 RIP     | Overdue   | Monkey is at your funeral. Monkey brought bananas. |
+| Level      | Time Left | Monkey Response                             |
+| ---------- | --------- | ------------------------------------------- |
+| 🟢 Chill   | 5+ days   | Monkey is proud. Don't ruin this.           |
+| 🟡 Nervous | 2–4 days  | Monkey is watching. Monkey senses weakness. |
+| 🟠 Panic   | 1 day     | OOH OOH AH AH. MONKEY PANICKING.            |
+| 🔴 Doomed  | <6 hours  | Monkey has seen this before. It ends badly. |
+| 💀 RIP     | Overdue   | Monkey attended your academic funeral.      |
+
+---
+
+## 🧠 How It Works
+
+1. User opens Canvas
+2. Monkey Ranger activates
+3. Assignments are detected (prototype uses simulated Canvas data)
+4. Threat Level is calculated based on deadline proximity
+5. Monkey delivers a context-aware roast
+6. User experiences panic and productivity
 
 ---
 
@@ -34,22 +50,57 @@ judged by a monkey.
 
 - Chrome Extension (Manifest V3)
 - HTML / CSS / JavaScript
-- Gemini AI API
-- Canvas LMS API (coming soon)
+- Gemini AI (Monkey personality engine)
+- Canvas LMS API (planned integration)
+- Local assignment simulation for reliable demo
+
+---
+
+## 📦 Project Structure
+
+Monkey-Ranger-Extension/
+
+manifest.json Extension configuration  
+popup.html Extension interface  
+popup.css Styling and threat meter  
+popup.js Core logic and monkey response system  
+content.js Canvas detection script  
+fakeData.js Prototype assignment data
+
+README.md
 
 ---
 
 ## 🚀 How To Run Locally
 
-1. Clone this repo
-   \```bash
-   git clone https://github.com/VenkataChandresh/Monkey-Ranger-Extension.git
-   \```
-2. Open Chrome and go to `chrome://extensions`
-3. Enable **Developer Mode** (top right toggle)
-4. Click **Load Unpacked**
-5. Select the `Monkey-Ranger-Extension` folder
-6. Pin the extension and click the monkey 🐒
+1. Clone this repository
+
+git clone https://github.com/VenkataChandresh/Monkey-Ranger-Extension.git
+
+2. Open Chrome and navigate to:
+
+chrome://extensions
+
+3. Enable Developer Mode (toggle in top right)
+
+4. Click "Load unpacked"
+
+5. Select the Monkey-Ranger-Extension folder
+
+6. Click the Monkey Ranger extension icon 🐒
+
+Monkey will begin judging immediately.
+
+---
+
+## 🔮 Future Improvements
+
+- Full Canvas API integration
+- Real-time assignment tracking
+- Personalized procrastination analytics
+- Google Calendar integration
+- Expanded monkey personality modes
+- AI-generated survival plans
 
 ---
 
@@ -59,4 +110,10 @@ judged by a monkey.
 
 ---
 
-> _Built with love, caffeine, and the spirit of a very judgmental monkey._ 🐒
+## 🐒 Final Warning
+
+Monkey Ranger does not create deadlines.
+
+Monkey Ranger reveals them.
+
+What you do next is between you and Monkey.
