@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Monkey Ranger",
+  "version": "1.0",
+  "description": "Monkey judges your deadlines so you don't have to.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

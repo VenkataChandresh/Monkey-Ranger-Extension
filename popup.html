@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monkey Ranger 🐒</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=DM+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-left">
+        <span class="monkey-icon">🐒</span>
+        <div>
+          <h1 class="title">Monkey Ranger</h1>
+          <p class="subtitle">Monkey is watching your deadlines.</p>
+        </div>
+      </div>
+      <div class="panic-badge" id="panicBadge">
+        <span id="panicScore">0</span>
+        <span class="panic-label">PANIC</span>
+      </div>
+    </div>
+
+    <!-- PANIC METER -->
+    <div class="panic-meter-container">
+      <div class="panic-meter-label">
+        <span>😌 Chill</span>
+        <span>Overall Panic Level</span>
+        <span>💀 Dead</span>
+      </div>
+      <div class="panic-meter-bar">
+        <div class="panic-meter-fill" id="panicFill"></div>
+      </div>
+    </div>
+
+    <!-- MONKEY SAYS -->
+    <div class="monkey-says" id="monkeySays">
+      <span class="monkey-says-icon">🐒</span>
+      <p id="monkeyMessage">Monkey is loading your doom...</p>
+    </div>
+
+    <!-- ASSIGNMENTS LIST -->
+    <div class="section-title">Your Assignments</div>
+    <div class="assignments-list" id="assignmentsList">
+      <!-- Populated by popup.js -->
+    </div>
+
+    <!-- VENT BOX -->
+    <div class="vent-section">
+      <p class="vent-label">🗣️ Tell Monkey what's going on:</p>
+      <textarea
+        id="ventInput"
+        placeholder="I haven't started and it's due in 2 hours..."
+      ></textarea>
+      <button id="ventBtn" onclick="handleVent()">Ask Monkey 🐒</button>
+      <p class="vent-response" id="ventResponse"></p>
+    </div>
+
+    <script src="data/fakeCanvas.js"></script>
+    <script src="logic.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
