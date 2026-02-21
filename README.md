@@ -65,7 +65,6 @@ popup.html Extension interface
 popup.css Styling and threat meter  
 popup.js Core logic and monkey response system  
 content.js Canvas detection script  
-fakeData.js Prototype assignment data
 
 README.md
 
