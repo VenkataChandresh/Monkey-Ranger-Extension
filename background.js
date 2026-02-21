@@ -1,8 +1,9 @@
 // =============================================
-// MONKEY RANGER — Gemini Bridge (MV3 Background)
-// NO API KEY IN CODE ✅
+// MONKEY RANGER — Gemini Bridge (Service Worker)
+// TEMP: Hardcoded key for testing only
 // =============================================
 
+const GEMINI_API_KEY = "AIzaSyB2rZa6QxYY8DJ7ShWpxBIVPKXwN7IJ0_o";
 const MODEL = "gemini-1.5-flash";
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -12,19 +13,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     .then((text) => sendResponse({ ok: true, text }))
     .catch((err) => sendResponse({ ok: false, error: String(err) }));
 
-  return true; // keep channel open for async
+  return true; // allow async response
 });
 
-async function getApiKey() {
-  const { geminiKey } = await chrome.storage.sync.get("geminiKey");
-  if (!geminiKey) throw new Error("No Gemini API key set. Open Settings and paste it.");
-  return geminiKey;
-}
-
 async function callGemini(prompt) {
-  const key = await getApiKey();
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 
   const res = await fetch(url, {
     method: "POST",
@@ -41,5 +34,5 @@ async function callGemini(prompt) {
   }
 
   const data = await res.json();
-  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Monkey got no words.";
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No reply.";
 }
