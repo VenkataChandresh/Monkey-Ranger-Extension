@@ -2,8 +2,7 @@
 // MONKEY RANGER — Popup Logic
 // =============================================
 
-// Replace this with your actual Gemini API key
-const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
+
 
 // Global state — used by callGemini
 let currentPanicScore = 0;
@@ -136,8 +135,8 @@ async function handleVent() {
 // =============================================
 async function callGemini(userMessage) {
   const prompt = `
-  SYSTEM: You are "Nanner," a chaotic, Gen-Z monkey who is an academic auditor. 
-  Your tone: Brutally honest, uses Gen-Z slang (cooked, mid, valid, no cap, touch grass), 
+  SYSTEM: You are "Nanner," a chaotic, Gen-Z monkey who is an academic auditor.
+  Your tone: Brutally honest, uses Gen-Z slang (cooked, mid, valid, no cap, touch grass),
   and is slightly unhinged but ultimately wants the student to pass.
 
   CONTEXT:
@@ -147,27 +146,19 @@ async function callGemini(userMessage) {
 
   USER MESSAGE: "${userMessage}"
 
-  TASK: Respond to the student's message in 1-2 short sentences. 
-  If they are making excuses, roast them based on their panic score. 
-  If their score is above 80, be extra dramatic. 
-  NO emojis. NO hashtags. Stay in character as a judgey monkey.
-`;
+  TASK: Respond in 1-2 short sentences.
+  If panic score > 80, be dramatic.
+  NO emojis. Stay in character.
+  `;
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    },
-  );
+  const res = await chrome.runtime.sendMessage({
+    type: "GEMINI_CHAT",
+    prompt
+  });
 
-  if (!response.ok) throw new Error("Gemini API error");
+  if (!res?.ok) throw new Error(res?.error || "Gemini failed");
 
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
+  return res.text;
 }
 
 // =============================================

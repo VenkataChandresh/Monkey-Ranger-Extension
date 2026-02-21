@@ -4,10 +4,11 @@
   "version": "1.0",
   "description": "Monkey judges your deadlines so you don't have to.",
   "permissions": ["storage"],
+  "host_permissions": ["https://generativelanguage.googleapis.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html"
   }
 }
-
-
-sdasdsad
