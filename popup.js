@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPanicScore(panicScore);
   renderMonkeyMessage(processed);
   renderAssignments(processed);
+
+  
+  const ventBtn = document.getElementById("ventBtn");
+  ventBtn.addEventListener("click", handleVent);
 });
 
 // =============================================
