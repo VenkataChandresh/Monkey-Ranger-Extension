@@ -3,67 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monkey Ranger 🐒</title>
+    <title>Monkey Ranger</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bangers&family=DM+Sans:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="popup.css" />
   </head>
+
   <body>
+    <div class="jungle-bg"></div>
+    <div class="jungle-overlay"></div>
+
     <!-- HEADER -->
-    <div class="header">
+    <header class="header">
       <div class="header-left">
-        <div class="monkey-icon">
-          <img src="./assets/extension_logo.png" alt="Monkey Ranger Logo" />
+        <div class="logo-wrap">
+          <span class="logo-emoji">🐒</span>
         </div>
-        <div>
-          <h1 class="title">Monkey Ranger</h1>
-          <p class="subtitle">Monkey is watching your deadlines.</p>
+        <div class="header-text">
+          <span class="app-name">Monkey Ranger</span>
+          <span class="app-sub">Academic Threat Monitor</span>
         </div>
       </div>
-      <div class="panic-badge" id="panicBadge">
-        <span id="panicScore">0</span>
-        <span class="panic-label">PANIC</span>
+
+      <div class="status-pill" id="panicBadge">
+        <span class="status-dot" id="panicDot"></span>
+        <span id="panicScore">0</span>%
+      </div>
+    </header>
+
+    <div class="hdivider"></div>
+
+    <!-- OVERVIEW ROW (Only 2 stats now) -->
+    <div class="overview-row">
+      <div class="overview-stat">
+        <span class="overview-val" id="assignmentCount">—</span>
+        <span class="overview-key">Active</span>
+      </div>
+
+      <div class="overview-stat">
+        <span class="overview-val" id="nextDue">—</span>
+        <span class="overview-key">Next Due</span>
       </div>
     </div>
 
-    <!-- PANIC METER -->
-    <div class="panic-meter-container">
-      <div class="panic-meter-label">
-        <span>😌 Chill</span>
-        <span>Overall Panic Level</span>
-        <span>💀 Dead</span>
+    <!-- METER -->
+    <div class="meter-wrap">
+      <div class="meter-track">
+        <div class="meter-fill" id="panicFill"></div>
       </div>
-      <div class="panic-meter-bar">
-        <div class="panic-meter-fill" id="panicFill"></div>
+      <div class="meter-ends">
+        <span>Chill</span>
+        <span>Panic Level</span>
+        <span>RIP</span>
       </div>
     </div>
 
-    <!-- MONKEY SAYS -->
-    <div class="monkey-says" id="monkeySays">
-      <img src="./assets/extension_logo.png" alt="Extension Logo" />
-      <p id="monkeyMessage" class="sarcastic">Monkey is loading your doom...</p>
+    <div class="hdivider"></div>
+
+    <!-- NANNER -->
+    <div class="nanner-row">
+      <span class="nanner-avatar">🐒</span>
+      <div class="nanner-body">
+        <span class="nanner-label">Nanner</span>
+        <p class="nanner-msg" id="monkeyMessage">
+          Loading your academic fate...
+        </p>
+      </div>
     </div>
 
-    <!-- ASSIGNMENTS LIST -->
-    <div class="section-title">Your Assignments</div>
-    <div class="assignments-list" id="assignmentsList">
-      <!-- Populated by popup.js -->
+    <div class="hdivider"></div>
+
+    <!-- ASSIGNMENTS -->
+    <div class="list-header">
+      <span class="list-title">Assignments</span>
+      <span class="list-count" id="listCount"></span>
     </div>
 
-    <!-- VENT BOX -->
-    <div class="vent-section">
-      <p class="vent-label">🗣️ Tell Monkey what's going on:</p>
+    <div class="assignments-list" id="assignmentsList"></div>
+
+    <div class="hdivider"></div>
+
+    <!-- VENT -->
+    <div class="vent-wrap">
+      <div class="vent-top">
+        <span class="vent-title">Ask Nanner</span>
+        <span class="vent-hint">AI-powered roasting</span>
+      </div>
+
       <textarea
         id="ventInput"
-        placeholder="I haven't started and it's due in 2 hours..."
+        placeholder="I haven't started and it's due at midnight..."
       ></textarea>
+
       <button id="ventBtn">
-        Ask Monkey
-        <img src="./assets/extension_logo.png" alt="Extension Logo" />
+        <span>Send</span>
+        <span class="btn-icon">→</span>
       </button>
+
       <p class="vent-response" id="ventResponse"></p>
     </div>
 
