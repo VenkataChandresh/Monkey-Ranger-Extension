@@ -17,122 +17,132 @@
     <div class="jungle-bg"></div>
     <div class="jungle-overlay"></div>
     <div class="popup-scroll">
-
-    <!-- HEADER -->
-    <header class="header">
-      <div class="header-left">
-        <div class="logo-wrap">
-          <img src="./assets/background.png" alt="Send" />
+      <!-- HEADER -->
+      <header class="header">
+        <div class="header-left">
+          <div class="logo-wrap">
+            <img src="./assets/background.png" alt="Send" />
+          </div>
+          <div class="header-text">
+            <span class="app-name">Monkey Ranger</span>
+            <span class="app-sub">Academic Threat Monitor</span>
+          </div>
         </div>
-        <div class="header-text">
-          <span class="app-name">Monkey Ranger</span>
-          <span class="app-sub">Academic Threat Monitor</span>
+
+        <div class="status-pill" id="panicBadge">
+          <span class="status-dot" id="panicDot"></span>
+          <span id="panicScore">0</span>%
+        </div>
+      </header>
+
+      <div class="hdivider"></div>
+
+      <!-- OVERVIEW ROW (Only 2 stats now) -->
+      <div class="overview-row">
+        <div class="overview-stat">
+          <span class="overview-val" id="assignmentCount">—</span>
+          <span class="overview-key">Active</span>
+        </div>
+
+        <div class="overview-stat">
+          <span class="overview-val" id="nextDue">—</span>
+          <span class="overview-key">Next Due</span>
         </div>
       </div>
 
-      <div class="status-pill" id="panicBadge">
-        <span class="status-dot" id="panicDot"></span>
-        <span id="panicScore">0</span>%
-      </div>
-    </header>
-
-    <div class="hdivider"></div>
-
-    <!-- OVERVIEW ROW (Only 2 stats now) -->
-    <div class="overview-row">
-      <div class="overview-stat">
-        <span class="overview-val" id="assignmentCount">—</span>
-        <span class="overview-key">Active</span>
+      <!-- METER -->
+      <div class="meter-wrap">
+        <div class="meter-track">
+          <div class="meter-fill" id="panicFill"></div>
+        </div>
+        <div class="meter-ends">
+          <span>Chill</span>
+          <span>Panic Level</span>
+          <span>RIP</span>
+        </div>
       </div>
 
-      <div class="overview-stat">
-        <span class="overview-val" id="nextDue">—</span>
-        <span class="overview-key">Next Due</span>
-      </div>
-    </div>
+      <div class="hdivider"></div>
 
-    <!-- METER -->
-    <div class="meter-wrap">
-      <div class="meter-track">
-        <div class="meter-fill" id="panicFill"></div>
-      </div>
-      <div class="meter-ends">
-        <span>Chill</span>
-        <span>Panic Level</span>
-        <span>RIP</span>
-      </div>
-    </div>
-
-    <div class="hdivider"></div>
-
-    <!-- Monkahh -->
-    <div class="Monkahh-row">
-      <img src="./assets/extension_logo.png" alt="Send" />
-      <div class="Monkahh-body">
-        <span class="Monkahh-label">Monkahh</span>
-        <p class="Monkahh-msg" id="monkeyMessage">
-          Loading your academic fate...
-        </p>
-      </div>
-    </div>
-
-    <div class="hdivider"></div>
-
-    <!-- AI Difficulty Analyzer -->
-    <section class="difficulty-panel" id="difficultyPanel">
-      <div class="difficulty-head">
-        <span class="difficulty-title">AI Difficulty Analyzer</span>
-        <span class="difficulty-status" id="difficultyStatus">Scanning...</span>
-      </div>
-
-      <p class="difficulty-target" id="difficultyTarget">
-        Finding your highest panic assignment...
-      </p>
-
-      <div class="difficulty-score-row">
-        <span class="difficulty-score" id="difficultyScore">--</span>
-        <span class="difficulty-label" id="difficultyLabel">Awaiting analysis</span>
-      </div>
-
-      <p class="difficulty-roast" id="difficultyRoast"></p>
-    </section>
-
-    <div class="hdivider"></div>
-
-    <!-- ASSIGNMENTS -->
-    <div class="list-header">
-      <span class="list-title">Assignments</span>
-      <span class="list-count" id="listCount"></span>
-    </div>
-
-    <div class="assignments-list" id="assignmentsList"></div>
-
-    <div class="hdivider"></div>
-
-    <!-- VENT -->
-    <div class="vent-wrap">
-      <div class="vent-top">
-        <span class="vent-title">Ask Monkahh</span>
-        <span class="vent-hint">AI-powered roasting</span>
-      </div>
-
-      <textarea
-        id="ventInput"
-        placeholder="I haven't started and it's due at midnight..."
-      ></textarea>
-
-      <button id="ventBtn">
+      <!-- Monkahh -->
+      <div class="Monkahh-row">
         <img src="./assets/extension_logo.png" alt="Send" />
-        <p>Ask Ranger</p>
-        <span class="btn-icon">→</span>
-      </button>
+        <div class="Monkahh-body">
+          <span class="Monkahh-label">Monkahh</span>
+          <p class="Monkahh-msg" id="monkeyMessage">
+            Loading your academic fate...
+          </p>
+        </div>
+      </div>
 
-      <p class="vent-response" id="ventResponse"></p>
-    </div>
+      <div class="hdivider"></div>
 
-    <script src="data/fakeCanvas.js"></script>
-    <script src="logic.js"></script>
-    <script src="popup.js"></script>
+      <!-- AI Difficulty Analyzer -->
+      <section class="difficulty-panel" id="difficultyPanel">
+        <div class="difficulty-head">
+          <span class="difficulty-title">AI Difficulty Analyzer</span>
+          <span class="difficulty-status" id="difficultyStatus"
+            >Scanning...</span
+          >
+        </div>
+
+        <p class="difficulty-target" id="difficultyTarget">
+          Finding your highest panic assignment...
+        </p>
+
+        <div class="difficulty-score-row">
+          <span class="difficulty-score" id="difficultyScore">--</span>
+          <span class="difficulty-label" id="difficultyLabel"
+            >Awaiting analysis</span
+          >
+        </div>
+
+        <p class="difficulty-roast" id="difficultyRoast"></p>
+      </section>
+
+      <div class="hdivider"></div>
+
+      <!-- ASSIGNMENTS -->
+      <div class="list-header">
+        <span class="list-title">Assignments</span>
+        <span class="list-count" id="listCount"></span>
+      </div>
+
+      <div class="assignments-wrapper">
+        <div class="assignments-list" id="assignmentsList"></div>
+
+        <!-- Scroll Hint -->
+        <div class="scroll-hint" id="scrollHint">
+          <span>↓</span>
+        </div>
+      </div>
+
+      <div class="hdivider"></div>
+
+      <!-- VENT -->
+      <div class="vent-wrap">
+        <div class="vent-top">
+          <span class="vent-title">Ask Monkahh</span>
+          <span class="vent-hint">AI-powered roasting</span>
+        </div>
+
+        <textarea
+          id="ventInput"
+          placeholder="I haven't started and it's due at midnight..."
+        ></textarea>
+
+        <button id="ventBtn">
+          <img src="./assets/extension_logo.png" alt="Send" />
+          <p>Ask Ranger</p>
+          <span class="btn-icon">→</span>
+        </button>
+
+        <p class="vent-response" id="ventResponse"></p>
+      </div>
+
+      <script src="data/fakeCanvas.js"></script>
+      <script src="logic.js"></script>
+      <script src="popup.js"></script>
     </div>
   </body>
 </html>

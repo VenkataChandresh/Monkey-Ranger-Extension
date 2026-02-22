@@ -39,8 +39,10 @@
   inset: 0;
   z-index: -2;
   background-image: url("./assets/background.png");
-  background-size: cover;
+  background-size: 115%;
   background-position: center;
+  background-repeat: no-repeat;
+
   background-color: #0a0f0a;
 }
 
@@ -50,9 +52,9 @@
   z-index: -1;
   background: linear-gradient(
     180deg,
-    rgba(8, 14, 8, 0.92) 0%,
-    rgba(6, 12, 6, 0.88) 50%,
-    rgba(4, 10, 4, 0.95) 100%
+    rgba(8, 14, 8, 0.75) 0%,
+    rgba(6, 12, 6, 0.7) 50%,
+    rgba(4, 10, 4, 0.8) 100%
   );
 }
 
@@ -339,7 +341,11 @@ body::-webkit-scrollbar-corner {
   border-radius: 12px;
   border: 1px solid var(--border);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.02)
+    ),
     rgba(8, 16, 9, 0.55);
 }
 
@@ -700,4 +706,61 @@ img {
 /* Hover effect */
 .assignments-list::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* =============================================
+   Scroll Hint + Submitted State Enhancements
+   ============================================= */
+
+/* Wrapper so scroll hint can position properly */
+.assignments-wrapper {
+  position: relative;
+}
+
+/* Scroll Hint Arrow */
+.scroll-hint {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.scroll-hint span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  animation: scrollBounce 1.6s infinite;
+}
+
+@keyframes scrollBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+}
+
+/* =============================================
+   Submitted Assignment Styling
+   ============================================= */
+
+/* Make submitted time green */
+.threat-submitted .time-left {
+  color: var(--green);
+}
+
+/* Strike and fade assignment name */
+.threat-submitted .assignment-name {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Slight fade for course text */
+.threat-submitted .assignment-course {
+  opacity: 0.5;
 }

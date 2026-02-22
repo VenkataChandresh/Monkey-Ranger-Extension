@@ -25,6 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ventBtn = document.getElementById("ventBtn");
   ventBtn.addEventListener("click", handleVent);
+
+  const list = document.getElementById("assignmentsList");
+  const scrollHint = document.getElementById("scrollHint");
+
+  list.addEventListener("scroll", () => {
+    const atBottom =
+      list.scrollTop + list.clientHeight >= list.scrollHeight - 2;
+
+    scrollHint.style.opacity = atBottom ? "0" : "1";
+  });
 });
 
 // =============================================
@@ -177,7 +187,11 @@ async function renderDifficultyAnalyzer(processed) {
     statusEl.textContent = "Analyzed";
     scoreEl.textContent = String(difficulty);
     labelEl.textContent = getDifficultyLabel(difficulty);
-    roastEl.textContent = getDifficultyRoast(urgent, difficulty, analysis.reason);
+    roastEl.textContent = getDifficultyRoast(
+      urgent,
+      difficulty,
+      analysis.reason,
+    );
   } catch (err) {
     console.error("Difficulty analyzer error:", err);
 
