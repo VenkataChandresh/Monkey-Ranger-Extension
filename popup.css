@@ -674,7 +674,7 @@ img {
   flex-direction: column;
   gap: 8px;
 
-  max-height: 165px; /* adjust between 190–210 */
+  max-height: 145px; /* slightly shorter */
   overflow-y: auto;
 
   padding-right: 6px;
