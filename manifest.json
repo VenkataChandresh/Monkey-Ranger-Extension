@@ -9,6 +9,10 @@
     "48": "./assets/extension_logo.png",
     "128": "./assets/extension_logo.png"
   },
+  "host_permissions": ["https://generativelanguage.googleapis.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "./assets/extension_logo.png"

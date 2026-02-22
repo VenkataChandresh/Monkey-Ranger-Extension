@@ -2,9 +2,6 @@
 // MONKEY RANGER — Popup Logic
 // =============================================
 
-// Replace this with your actual Gemini API key
-const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
-
 // Global state — used by callGemini
 let currentPanicScore = 0;
 let currentUrgentName = "Unknown Assignment";
@@ -25,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMonkeyMessage(processed);
   renderAssignments(processed);
 
-  
   const ventBtn = document.getElementById("ventBtn");
   ventBtn.addEventListener("click", handleVent);
 });
@@ -123,8 +119,8 @@ async function handleVent() {
     const message = await callGemini(input);
     responseEl.textContent = `🐒 ${message}`;
   } catch (err) {
-    // Fallback if API fails — use local messages
-    responseEl.textContent = `🐒 ${getFallbackVentResponse(input)}`;
+    console.error("Popup Gemini error:", err);
+    responseEl.textContent = `🐒 ERROR: ${err?.message || err}`;
   }
 
   btn.disabled = false;
@@ -136,38 +132,37 @@ async function handleVent() {
 // =============================================
 async function callGemini(userMessage) {
   const prompt = `
-  SYSTEM: You are "Nanner," a chaotic, Gen-Z monkey who is an academic auditor. 
-  Your tone: Brutally honest, uses Gen-Z slang (cooked, mid, valid, no cap, touch grass), 
-  and is slightly unhinged but ultimately wants the student to pass.
+CONTEXT:
+- Panic Score: ${currentPanicScore}%
+- Most urgent assignment: "${currentUrgentName}"
 
-  CONTEXT:
-  - The student is looking at their "Monkey Ranger" dashboard.
-  - Their overall Panic Score is ${currentPanicScore}%.
-  - Their most urgent assignment is "${currentUrgentName}".
+USER MESSAGE: "${userMessage}"
 
-  USER MESSAGE: "${userMessage}"
+STYLE:
+You are an unhinged academic monkey auditor.
+You exaggerate everything.
+You speak like the world is ending academically.
+Use phrases like:
+- "you are COOKED"
+- "academic obituary"
+- "GPA filing for divorce"
+- "banana brain crisis"
+- "emotional damage in 5 minutes"
 
-  TASK: Respond to the student's message in 1-2 short sentences. 
-  If they are making excuses, roast them based on their panic score. 
-  If their score is above 80, be extra dramatic. 
-  NO emojis. NO hashtags. Stay in character as a judgey monkey.
+Make it dramatic, theatrical, and savage.
+DO NOT suggest self-harm.
+Respond in 2-3 chaotic sentences.
+End with a new line containing exactly: <END>
 `;
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    },
-  );
+  const res = await chrome.runtime.sendMessage({
+    type: "GEMINI_CHAT",
+    prompt,
+  });
 
-  if (!response.ok) throw new Error("Gemini API error");
+  if (!res?.ok) throw new Error(res?.error || "Gemini failed");
 
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
+  return res.text;
 }
 
 // =============================================
