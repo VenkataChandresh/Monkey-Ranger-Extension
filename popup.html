@@ -16,6 +16,7 @@
   <body>
     <div class="jungle-bg"></div>
     <div class="jungle-overlay"></div>
+    <div class="popup-scroll">
 
     <!-- HEADER -->
     <header class="header">
@@ -77,6 +78,27 @@
 
     <div class="hdivider"></div>
 
+    <!-- AI Difficulty Analyzer -->
+    <section class="difficulty-panel" id="difficultyPanel">
+      <div class="difficulty-head">
+        <span class="difficulty-title">AI Difficulty Analyzer</span>
+        <span class="difficulty-status" id="difficultyStatus">Scanning...</span>
+      </div>
+
+      <p class="difficulty-target" id="difficultyTarget">
+        Finding your highest panic assignment...
+      </p>
+
+      <div class="difficulty-score-row">
+        <span class="difficulty-score" id="difficultyScore">--</span>
+        <span class="difficulty-label" id="difficultyLabel">Awaiting analysis</span>
+      </div>
+
+      <p class="difficulty-roast" id="difficultyRoast"></p>
+    </section>
+
+    <div class="hdivider"></div>
+
     <!-- ASSIGNMENTS -->
     <div class="list-header">
       <span class="list-title">Assignments</span>
@@ -111,5 +133,6 @@
     <script src="data/fakeCanvas.js"></script>
     <script src="logic.js"></script>
     <script src="popup.js"></script>
+    </div>
   </body>
 </html>

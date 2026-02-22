@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMonkeyMessage(processed);
   renderAssignments(processed);
   renderOverviewStats(fakeAssignments, processed);
+  renderDifficultyAnalyzer(processed);
 
   const ventBtn = document.getElementById("ventBtn");
   ventBtn.addEventListener("click", handleVent);
@@ -133,6 +134,168 @@ function renderAssignments(processed) {
 
     container.appendChild(card);
   });
+}
+
+// =============================================
+// AI DIFFICULTY ANALYZER
+// =============================================
+async function renderDifficultyAnalyzer(processed) {
+  const panel = document.getElementById("difficultyPanel");
+  const statusEl = document.getElementById("difficultyStatus");
+  const targetEl = document.getElementById("difficultyTarget");
+  const scoreEl = document.getElementById("difficultyScore");
+  const labelEl = document.getElementById("difficultyLabel");
+  const roastEl = document.getElementById("difficultyRoast");
+
+  const urgent = getHighestPanicAssignment(processed);
+
+  if (!urgent) {
+    panel.dataset.tier = "easy";
+    statusEl.textContent = "Idle";
+    targetEl.textContent = "No upcoming assignments to analyze.";
+    scoreEl.textContent = "0";
+    labelEl.textContent = "No target";
+    roastEl.textContent =
+      "Overdue assignments are ignored here. Monkahh only judges work that can still ruin your evening.";
+    return;
+  }
+
+  const description = getAssignmentDescription(urgent);
+
+  targetEl.textContent = `${urgent.name} (${urgent.course})`;
+  statusEl.textContent = "Analyzing...";
+  scoreEl.textContent = "--";
+  labelEl.textContent = "Analyzing";
+  roastEl.textContent = "Scanning assignment pain level...";
+
+  try {
+    const analysis = await getGeminiDifficultyRating(urgent, description);
+    const difficulty = clampDifficultyScore(analysis.difficulty);
+    const tier = getDifficultyTier(difficulty);
+
+    panel.dataset.tier = tier;
+    statusEl.textContent = "Analyzed";
+    scoreEl.textContent = String(difficulty);
+    labelEl.textContent = getDifficultyLabel(difficulty);
+    roastEl.textContent = getDifficultyRoast(urgent, difficulty, analysis.reason);
+  } catch (err) {
+    console.error("Difficulty analyzer error:", err);
+
+    const fallbackDifficulty = getLocalDifficultyFallback(urgent);
+    const tier = getDifficultyTier(fallbackDifficulty);
+
+    panel.dataset.tier = tier;
+    statusEl.textContent = "Fallback";
+    scoreEl.textContent = String(fallbackDifficulty);
+    labelEl.textContent = `${getDifficultyLabel(fallbackDifficulty)} (Estimated)`;
+    roastEl.textContent = getDifficultyRoast(urgent, fallbackDifficulty);
+  }
+}
+
+function getHighestPanicAssignment(processed) {
+  const now = new Date();
+
+  return (
+    [...processed]
+      .filter((a) => !a.submitted)
+      .filter((a) => new Date(a.dueDate) >= now)
+      .sort((a, b) => {
+        const threatDiff = b.threat.panicScore - a.threat.panicScore;
+        if (threatDiff !== 0) return threatDiff;
+        return new Date(a.dueDate) - new Date(b.dueDate);
+      })[0] || null
+  );
+}
+
+function getAssignmentDescription(assignment) {
+  if (assignment.description && assignment.description.trim()) {
+    return assignment.description.trim();
+  }
+
+  return `No description provided for ${assignment.name}. Weight: ${assignment.weight}% of grade. Time left: ${assignment.timeLeft}.`;
+}
+
+async function getGeminiDifficultyRating(assignment, description) {
+  const prompt = `
+TASK:
+Rate the academic difficulty of this assignment from 1 to 10.
+
+ASSIGNMENT:
+- Name: ${assignment.name}
+- Course: ${assignment.course}
+- Weight: ${assignment.weight}%
+- Due: ${assignment.timeLeft}
+- Threat level: ${assignment.threat.label}
+- Description: ${description}
+
+RESPONSE FORMAT (STRICT):
+DIFFICULTY: <integer 1-10>
+REASON: <one short sentence under 20 words>
+
+No extra lines. No markdown.
+`;
+
+  const res = await chrome.runtime.sendMessage({
+    type: "GEMINI_CHAT",
+    prompt,
+  });
+
+  if (!res?.ok) throw new Error(res?.error || "Gemini failed");
+
+  const text = (res.text || "").trim();
+  const difficultyMatch = text.match(/DIFFICULTY:\s*(10|[1-9])\b/i);
+  const reasonMatch = text.match(/REASON:\s*(.+)$/im);
+
+  if (!difficultyMatch) {
+    throw new Error(`Unable to parse difficulty from Gemini response: ${text}`);
+  }
+
+  return {
+    difficulty: Number(difficultyMatch[1]),
+    reason: reasonMatch ? reasonMatch[1].trim() : "",
+  };
+}
+
+function clampDifficultyScore(score) {
+  return Math.max(1, Math.min(10, Math.round(Number(score) || 1)));
+}
+
+function getDifficultyTier(score) {
+  if (score <= 3) return "easy";
+  if (score <= 6) return "medium";
+  if (score <= 8) return "hard";
+  return "nightmare";
+}
+
+function getDifficultyLabel(score) {
+  if (score <= 3) return "Banana Easy";
+  if (score <= 6) return "Manageable Chaos";
+  if (score <= 8) return "Cooked Potential";
+  return "Academic Boss Fight";
+}
+
+function getDifficultyRoast(assignment, score, reason = "") {
+  const shortReason = reason ? ` ${reason}` : "";
+
+  if (score <= 3) {
+    return `${score}/10. Tragic. The assignment is easy and somehow you're still negotiating with it.${shortReason}`;
+  }
+
+  if (score <= 6) {
+    return `${score}/10. Very doable. If this goes wrong, please blame the procrastination committee you chair.${shortReason}`;
+  }
+
+  if (score <= 8) {
+    return `${score}/10. Real work. You can still survive this if you stop pretending 'later' is a strategy.${shortReason}`;
+  }
+
+  return `${score}/10. Academic boss fight. Amazing choice to bring vibes, zero prep, and blind optimism.${shortReason}`;
+}
+
+function getLocalDifficultyFallback(assignment) {
+  const base = Math.ceil((assignment.weight || 0) / 5);
+  const threatLift = Math.round((assignment.threat?.panicScore || 0) / 20);
+  return clampDifficultyScore(Math.max(1, base + threatLift));
 }
 
 // =============================================
