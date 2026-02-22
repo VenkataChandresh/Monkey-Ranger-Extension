@@ -24,7 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
   renderDifficultyAnalyzer(processed);
 
   const ventBtn = document.getElementById("ventBtn");
+  const ventInput = document.getElementById("ventInput");
   ventBtn.addEventListener("click", handleVent);
+  ventInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleVent();
+    }
+  });
 
   const list = document.getElementById("assignmentsList");
   const scrollHint = document.getElementById("scrollHint");
