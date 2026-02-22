@@ -4,7 +4,13 @@
   "version": "1.0",
   "description": "Monkey judges your deadlines so you don't have to.",
   "permissions": ["storage"],
+  "icons": {
+    "16": "./assets/extension_logo.png",
+    "48": "./assets/extension_logo.png",
+    "128": "./assets/extension_logo.png"
+  },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "./assets/extension_logo.png"
   }
 }

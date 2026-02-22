@@ -1,6 +1,5 @@
 /* =============================================
    MONKEY RANGER — Styles
-   Person 2's territory 🎨
    ============================================= */
 
 :root {
@@ -17,10 +16,10 @@
 }
 
 .sarcastic {
-  font-family: 'Comic Neue', cursive;
+  font-family: "Comic Neue", cursive;
   font-style: italic;
   font-size: 11px;
-  color: var(--accent2);  /* neon green for sarcasm */
+  color: var(--accent2); /* neon green for sarcasm */
 }
 
 * {
@@ -38,7 +37,7 @@ body {
   padding: 16px;
   overflow-x: hidden;
   background: linear-gradient(135deg, #0f1a0f 0%, #1b2f1b 100%);
-  background-image: url('assets/jungle-texture.png'); /* subtle overlay texture */
+  background-image: url("assets/jungle-texture.png"); /* subtle overlay texture */
   background-size: cover;
 }
 
@@ -57,8 +56,17 @@ body {
 }
 
 .monkey-icon {
-  font-size: 36px;
-  animation: monkeyBob 2s ease-in-out infinite;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monkey-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @keyframes monkeyBob {
@@ -160,7 +168,7 @@ body {
   align-items: flex-start;
   margin-bottom: 14px;
   animation: fadeIn 0.5s ease;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .monkey-says-icon {
@@ -208,14 +216,14 @@ body {
   animation: slideIn 0.4s ease;
   background: rgba(36, 51, 36, 0.6);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .assignment-card:hover {
   transform: translateX(3px);
   border-color: var(--accent);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 .threat-emoji {
@@ -265,7 +273,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .vent-label {
