@@ -51,15 +51,15 @@ const THREAT_LEVELS = {
 // These are shown on the dashboard before user types anything
 const FALLBACK_MESSAGES = {
   submitted:
-    "Nanner sees you submitted. Nanner is shook. Valid behavior, no cap.",
+    "Monkahh sees you submitted. Monkahh is shook. Valid behavior, no cap.",
   chill:
-    "You got time. Don't waste it, that's mid behavior. Nanner is watching.",
+    "You got time. Don't waste it, that's mid behavior. Monkahh is watching.",
   nervous:
-    "Nanner is concerned no cap. Maybe start... thinking about starting?",
-  panic: "OOH OOH AH AH. NANNER PANICKING ON YOUR BEHALF. YOU ARE COOKED.",
+    "Monkahh is concerned no cap. Maybe start... thinking about starting?",
+  panic: "OOH OOH AH AH. Monkahh PANICKING ON YOUR BEHALF. YOU ARE COOKED.",
   doomed:
-    "Less than 6 hours?! Nanner is screaming into the void. Touch grass later, study NOW.",
-  dead: "OVERDUE. Your GPA is gone. Nanner is at your funeral. It's giving tragedy.",
+    "Less than 6 hours?! Monkahh is screaming into the void. Touch grass later, study NOW.",
+  dead: "OVERDUE. Your GPA is gone. Monkahh is at your funeral. It's giving tragedy.",
 };
 
 // Calculate hours until due
@@ -83,7 +83,7 @@ function getThreatLevel(assignment) {
 
 // Get fallback message for a threat level (used before Gemini responds)
 function getMonkeyMessage(level) {
-  return FALLBACK_MESSAGES[level] || "Nanner is processing your chaos...";
+  return FALLBACK_MESSAGES[level] || "Monkahh is processing your chaos...";
 }
 
 // Get the most urgent unsubmitted assignment (used by popup.js for Gemini context)

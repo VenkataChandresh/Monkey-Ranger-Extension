@@ -227,19 +227,19 @@ body {
   text-transform: uppercase;
 }
 
-/* ───────────── Nanner ───────────── */
+/* ───────────── Monkahh ───────────── */
 
-.nanner-row {
+.Monkahh-row {
   display: flex;
   gap: 9px;
   padding: 11px 14px;
 }
 
-.nanner-avatar {
+.Monkahh-avatar {
   font-size: 18px;
 }
 
-.nanner-label {
+.Monkahh-label {
   font-size: 10px;
   font-weight: 600;
   color: var(--green);
@@ -247,7 +247,7 @@ body {
   letter-spacing: 0.8px;
 }
 
-.nanner-msg {
+.Monkahh-msg {
   font-size: 12px;
   font-style: italic;
   line-height: 1.55;
@@ -494,4 +494,39 @@ img {
 .logo-wrap img {
   width: 35px;
   height: 35px;
+}
+
+/*Scrolling assignments */
+/* make only the assignments section scroll */
+.assignments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  max-height: 165px; /* adjust between 190–210 */
+  overflow-y: auto;
+
+  padding-right: 6px;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar Track (background area) */
+.assignments-list::-webkit-scrollbar {
+  width: 6px; /* thinner */
+}
+
+/* Scrollbar background */
+.assignments-list::-webkit-scrollbar-track {
+  background: transparent; /* no white */
+}
+
+/* Scroll thumb (the moving part) */
+.assignments-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15); /* subtle */
+  border-radius: 99px;
+}
+
+/* Hover effect */
+.assignments-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

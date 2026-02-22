@@ -95,7 +95,7 @@ function renderMonkeyMessage(processed) {
 
   if (!urgent) {
     document.getElementById("monkeyMessage").textContent =
-      "Nanner sees no unsubmitted assignments. Suspicious productivity detected.";
+      "Monkahh sees no unsubmitted assignments. Suspicious productivity detected.";
     return;
   }
 
@@ -144,7 +144,7 @@ async function handleVent() {
   const btn = document.getElementById("ventBtn");
 
   if (!input) {
-    responseEl.textContent = "Nanner requires words. Not vibes.";
+    responseEl.textContent = "Monkahh requires words. Not vibes.";
     return;
   }
 
@@ -209,7 +209,7 @@ End with a new line containing exactly: <END>
 function getFallbackVentResponse() {
   const fallbacks = [
     "You are COOKED. Academically flambéed.",
-    "Nanner detects GPA turbulence.",
+    "Monkahh detects GPA turbulence.",
     "This is giving academic obituary vibes.",
     "Your deadline is smiling. That is not good.",
     "Banana brain crisis detected. Open the document.",
