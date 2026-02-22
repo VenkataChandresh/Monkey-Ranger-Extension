@@ -173,37 +173,15 @@ async function renderDifficultyAnalyzer(processed) {
   const description = getAssignmentDescription(urgent);
 
   targetEl.textContent = `${urgent.name} (${urgent.course})`;
-  statusEl.textContent = "Analyzing...";
-  scoreEl.textContent = "--";
-  labelEl.textContent = "Analyzing";
-  roastEl.textContent = "Scanning assignment pain level...";
+  statusEl.textContent = "Local";
 
-  try {
-    const analysis = await getGeminiDifficultyRating(urgent, description);
-    const difficulty = clampDifficultyScore(analysis.difficulty);
-    const tier = getDifficultyTier(difficulty);
+  const localDifficulty = getLocalDifficultyFallback(urgent);
+  const tier = getDifficultyTier(localDifficulty);
 
-    panel.dataset.tier = tier;
-    statusEl.textContent = "Analyzed";
-    scoreEl.textContent = String(difficulty);
-    labelEl.textContent = getDifficultyLabel(difficulty);
-    roastEl.textContent = getDifficultyRoast(
-      urgent,
-      difficulty,
-      analysis.reason,
-    );
-  } catch (err) {
-    console.error("Difficulty analyzer error:", err);
-
-    const fallbackDifficulty = getLocalDifficultyFallback(urgent);
-    const tier = getDifficultyTier(fallbackDifficulty);
-
-    panel.dataset.tier = tier;
-    statusEl.textContent = "Fallback";
-    scoreEl.textContent = String(fallbackDifficulty);
-    labelEl.textContent = `${getDifficultyLabel(fallbackDifficulty)} (Estimated)`;
-    roastEl.textContent = getDifficultyRoast(urgent, fallbackDifficulty);
-  }
+  panel.dataset.tier = tier;
+  scoreEl.textContent = String(localDifficulty);
+  labelEl.textContent = `${getDifficultyLabel(localDifficulty)} (Estimated)`;
+  roastEl.textContent = getDifficultyRoast(urgent, localDifficulty);
 }
 
 function getHighestPanicAssignment(processed) {
@@ -245,28 +223,50 @@ ASSIGNMENT:
 RESPONSE FORMAT (STRICT):
 DIFFICULTY: <integer 1-10>
 REASON: <one short sentence under 20 words>
+ROAST: <one sarcastic sentence under 18 words>
 
+Return exactly those 3 lines.
 No extra lines. No markdown.
 `;
 
   const res = await chrome.runtime.sendMessage({
     type: "GEMINI_CHAT",
     prompt,
+    mode: "structured",
+    temperature: 0.2,
+    maxOutputTokens: 120,
   });
 
   if (!res?.ok) throw new Error(res?.error || "Gemini failed");
 
   const text = (res.text || "").trim();
-  const difficultyMatch = text.match(/DIFFICULTY:\s*(10|[1-9])\b/i);
+  const difficultyMatch =
+    text.match(/DIFFICULTY:\s*(10|[1-9])\b/i) ||
+    text.match(/\b(10|[1-9])\s*\/\s*10\b/i) ||
+    text.match(/\bdifficulty\b[^0-9]*(10|[1-9])\b/i);
   const reasonMatch = text.match(/REASON:\s*(.+)$/im);
+  const roastMatch = text.match(/ROAST:\s*(.+)$/im);
 
   if (!difficultyMatch) {
     throw new Error(`Unable to parse difficulty from Gemini response: ${text}`);
   }
 
+  const fallbackLines = text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const unlabeledLines = fallbackLines.filter(
+    (line) => !/^(DIFFICULTY|REASON|ROAST)\s*:/i.test(line),
+  );
+  const fallbackRoast = unlabeledLines.find((line) => line.length > 8) || "";
+  const fallbackReason =
+    unlabeledLines.find((line) => /because|since|requires|needs|multiple|long/i.test(line)) ||
+    "";
+
   return {
     difficulty: Number(difficultyMatch[1]),
-    reason: reasonMatch ? reasonMatch[1].trim() : "",
+    reason: reasonMatch ? reasonMatch[1].trim() : fallbackReason,
+    roast: roastMatch ? roastMatch[1].trim() : fallbackRoast,
   };
 }
 
@@ -290,26 +290,51 @@ function getDifficultyLabel(score) {
 
 function getDifficultyRoast(assignment, score, reason = "") {
   const shortReason = reason ? ` ${reason}` : "";
+  let options = [];
 
   if (score <= 3) {
-    return `${score}/10. Tragic. The assignment is easy and somehow you're still negotiating with it.${shortReason}`;
+    options = [
+      `${score}/10. Tragic. This is easy and you're still negotiating with it. Finish it and collect free points.${shortReason}`,
+      `${score}/10. Light work. You turned it into drama somehow. Do 20 minutes now and end the storyline.${shortReason}`,
+      `${score}/10. Beginner level. You are adding difficulty with imagination. Start now and get the easy win.${shortReason}`,
+    ];
+    return pickRandom(options);
   }
 
   if (score <= 6) {
-    return `${score}/10. Very doable. If this goes wrong, please blame the procrastination committee you chair.${shortReason}`;
+    options = [
+      `${score}/10. Very doable. Please thank the procrastination committee you chair, then actually start.${shortReason}`,
+      `${score}/10. Manageable pain. This becomes a crisis only if you wait. Knock out the first section now.${shortReason}`,
+      `${score}/10. Normal assignment. Your biggest opponent is timing, so beat it with one focused sprint.${shortReason}`,
+    ];
+    return pickRandom(options);
   }
 
   if (score <= 8) {
-    return `${score}/10. Real work. You can still survive this if you stop pretending 'later' is a strategy.${shortReason}`;
+    options = [
+      `${score}/10. Real work. You survive this only if 'later' stops being your whole strategy.${shortReason}`,
+      `${score}/10. Serious assignment. Stop romanticizing pressure and start typing like your grade can hear you.${shortReason}`,
+      `${score}/10. This needs effort, not speeches. Start ugly, fix later, submit alive.${shortReason}`,
+    ];
+    return pickRandom(options);
   }
 
-  return `${score}/10. Academic boss fight. Amazing choice to bring vibes, zero prep, and blind optimism.${shortReason}`;
+  options = [
+    `${score}/10. Academic boss fight. Amazing choice to bring vibes and no prep. Lock in and clutch it anyway.${shortReason}`,
+    `${score}/10. Nightmare tier. Bold strategy: confidence with no progress. Start now and steal a comeback.${shortReason}`,
+    `${score}/10. Boss fight energy. Monkahh hopes your plan includes more than manifesting. Sprint mode. Go.${shortReason}`,
+  ];
+  return pickRandom(options);
 }
 
 function getLocalDifficultyFallback(assignment) {
   const base = Math.ceil((assignment.weight || 0) / 5);
   const threatLift = Math.round((assignment.threat?.panicScore || 0) / 20);
   return clampDifficultyScore(Math.max(1, base + threatLift));
+}
+
+function pickRandom(items) {
+  return items[Math.floor(Math.random() * items.length)];
 }
 
 // =============================================

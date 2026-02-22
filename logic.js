@@ -50,16 +50,54 @@ const THREAT_LEVELS = {
 // Fallback messages — only used if Gemini API fails
 // These are shown on the dashboard before user types anything
 const FALLBACK_MESSAGES = {
-  submitted:
-    "Monkahh sees you submitted. Monkahh is shook. Valid behavior, no cap.",
-  chill:
-    "You got time. Don't waste it, that's mid behavior. Monkahh is watching.",
-  nervous:
-    "Monkahh is concerned no cap. Maybe start... thinking about starting?",
-  panic: "OOH OOH AH AH. Monkahh PANICKING ON YOUR BEHALF. YOU ARE COOKED.",
-  doomed:
-    "Less than 6 hours?! Monkahh is screaming into the void. Touch grass later, study NOW.",
-  dead: "OVERDUE. Your GPA is gone. Monkahh is at your funeral. It's giving tragedy.",
+  submitted: [
+    "Monkahh sees you submitted. Responsible behavior? In this economy? Keep cooking like that.",
+    "Submitted already? Wow. You beat the deadline without a cinematic breakdown. Respect.",
+    "Monkahh confirms submission. Suspicious competence detected. Do it again on the next one.",
+    "Assignment submitted on time? Monkahh is filing this under 'rare and beautiful events.'",
+    "Look at you being efficient. Future-you is thriving and present-you deserves a tiny victory lap.",
+    "You actually finished it before disaster mode. Monkahh approves this character development.",
+  ],
+  chill: [
+    "You got time, which means you'll try wasting it first. Plot twist: start early and flex later.",
+    "Deadline is far away. Classic setup for fake confidence. Start now and make future-you smug.",
+    "Plenty of time left. Start one small piece now and you can clown the panic version of yourself later.",
+    "This is the sweet spot: enough time to do it well, not enough time to keep pretending forever.",
+    "You are currently in the 'I got this' phase. Prove it by doing literally one real task.",
+    "Monkahh sees free points on the table. Start early and stop donating them to procrastination.",
+  ],
+  nervous: [
+    "Monkahh is concerned. Not emergency concerned. Just 'you are procrastinating again' concerned. Still salvageable.",
+    "This is fixable if you stop pretending opening the tab counts as progress. Write one paragraph. Go.",
+    "You should start. Yes, real start. Not a playlist, not a snack, not a motivational reel.",
+    "The assignment is not impossible. The delay strategy is the part that keeps failing.",
+    "You still have time to recover, but the clock has started judging you personally.",
+    "Monkahh recommends a 25-minute sprint before your brain invents a fake emergency.",
+  ],
+  panic: [
+    "OOH OOH AH AH. Panic tier. You are COOKED... unless you lock in right now.",
+    "This is where you say 'I work better under pressure' and then prove it. Open the doc.",
+    "Panic unlocked. Great time to finally read the directions and speedrun competence.",
+    "You wanted adrenaline? Congratulations. Now use it to finish something.",
+    "Monkahh sees chaos, but also comeback potential. Start with the easiest chunk and stack wins.",
+    "This can still be saved if you stop spiraling and start submitting words.",
+  ],
+  doomed: [
+    "Less than 6 hours?! Monkahh is screaming. Touch grass later, lock in NOW.",
+    "Doomed tier. Incredible strategy. Still, a focused sprint can save your grade. Move.",
+    "Clock is cooking you, but panic typing beats panic thinking. Start with the easiest part.",
+    "This is not the time for perfection. This is the time for progress and a working draft.",
+    "Monkahh has bad news and good news. Bad: time is gone. Good: you still have hands. Type.",
+    "You are one focused sprint away from turning a disaster into a survivable story.",
+  ],
+  dead: [
+    "OVERDUE. It's giving tragedy. Still submit if allowed and email the professor like a brave person.",
+    "Overdue. Professor may have moved on, but you can still try the late-submit comeback.",
+    "You missed it. Academic archaeology mode activated. Learn fast and stop the next one early.",
+    "Yes, it's overdue. No, that does not mean disappear. Submit what you can and communicate.",
+    "Monkahh cannot time travel, but Monkahh can recommend the apology-email + late-submit combo.",
+    "Take the L for this one, then use the lesson to bully the next deadline instead.",
+  ],
 };
 
 // Calculate hours until due
@@ -83,7 +121,15 @@ function getThreatLevel(assignment) {
 
 // Get fallback message for a threat level (used before Gemini responds)
 function getMonkeyMessage(level) {
-  return FALLBACK_MESSAGES[level] || "Monkahh is processing your chaos...";
+  const pool = FALLBACK_MESSAGES[level];
+  if (!pool) return "Monkahh is processing your chaos...";
+  if (typeof pool === "string") return pool;
+
+  for (const msg of pool) {
+    if (msg && Math.random() > 0.66) return msg;
+  }
+
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 // Get the most urgent unsubmitted assignment (used by popup.js for Gemini context)
