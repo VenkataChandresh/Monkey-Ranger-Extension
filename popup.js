@@ -2,8 +2,6 @@
 // MONKEY RANGER — Popup Logic
 // =============================================
 
-
-
 // Global state — used by callGemini
 let currentPanicScore = 0;
 let currentUrgentName = "Unknown Assignment";
@@ -24,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMonkeyMessage(processed);
   renderAssignments(processed);
 
-  
   const ventBtn = document.getElementById("ventBtn");
   ventBtn.addEventListener("click", handleVent);
 });
@@ -122,8 +119,8 @@ async function handleVent() {
     const message = await callGemini(input);
     responseEl.textContent = `🐒 ${message}`;
   } catch (err) {
-    // Fallback if API fails — use local messages
-    responseEl.textContent = `🐒 ${getFallbackVentResponse(input)}`;
+    console.error("Popup Gemini error:", err);
+    responseEl.textContent = `🐒 ERROR: ${err?.message || err}`;
   }
 
   btn.disabled = false;
@@ -135,25 +132,32 @@ async function handleVent() {
 // =============================================
 async function callGemini(userMessage) {
   const prompt = `
-  SYSTEM: You are "Nanner," a chaotic, Gen-Z monkey who is an academic auditor.
-  Your tone: Brutally honest, uses Gen-Z slang (cooked, mid, valid, no cap, touch grass),
-  and is slightly unhinged but ultimately wants the student to pass.
+CONTEXT:
+- Panic Score: ${currentPanicScore}%
+- Most urgent assignment: "${currentUrgentName}"
 
-  CONTEXT:
-  - The student is looking at their "Monkey Ranger" dashboard.
-  - Their overall Panic Score is ${currentPanicScore}%.
-  - Their most urgent assignment is "${currentUrgentName}".
+USER MESSAGE: "${userMessage}"
 
-  USER MESSAGE: "${userMessage}"
+STYLE:
+You are an unhinged academic monkey auditor.
+You exaggerate everything.
+You speak like the world is ending academically.
+Use phrases like:
+- "you are COOKED"
+- "academic obituary"
+- "GPA filing for divorce"
+- "banana brain crisis"
+- "emotional damage in 5 minutes"
 
-  TASK: Respond in 1-2 short sentences.
-  If panic score > 80, be dramatic.
-  NO emojis. Stay in character.
-  `;
+Make it dramatic, theatrical, and savage.
+DO NOT suggest self-harm.
+Respond in 2-3 chaotic sentences.
+End with a new line containing exactly: <END>
+`;
 
   const res = await chrome.runtime.sendMessage({
     type: "GEMINI_CHAT",
-    prompt
+    prompt,
   });
 
   if (!res?.ok) throw new Error(res?.error || "Gemini failed");
