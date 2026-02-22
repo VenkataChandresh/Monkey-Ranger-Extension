@@ -409,3 +409,27 @@ button:disabled {
     transform: translateX(4px);
   }
 }
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+button img {
+  width: 25px; /* change this */
+  height: 25px; /* change this */
+  object-fit: contain;
+}
+
+.threat-emoji img {
+  width: 40px; /* adjust this */
+  height: 40px; /* adjust this */
+  object-fit: contain;
+}
+
+img {
+  max-width: 40px;
+  max-height: 40px;
+}
